@@ -11,15 +11,14 @@ def simplex(C,A,b):
     nbv = zeros((1,n))
     bs = zeros((1,n+m))
 
-    # print "A = ", A
-    # print "I(m) = ", eye(m)
-    print "Transpose b", b.T
-    parcial = concatenate((A, eye(m)), axis=1) 
-    parcial = concatenate((parcial, b.T), axis=1)
-        #, b.T)
+    
+    parcial = concatenate((A, eye(m), b[:,newaxis]), axis=1) #bT = b[:,np.newaxis]
     print parcial
-    # costs = [-C,zeros(1,m+1)]
-    # tabular = [parcial;costs]
+    costs = concatenate((-C,zeros((m+1))))
+    print costs
+
+    tabular = concatenate((parcial,costs), 0)
+    print tabular
     # tabular = array([array([A,eye(m),b.T]),array([-C,zeros((1,m+1))])])
     # print "TABULAR : " , tabular
 
