@@ -13,11 +13,11 @@ def simplex(C,A,b):
 
     
     parcial = concatenate((A, eye(m), b[:,newaxis]), axis=1) #bT = b[:,np.newaxis]
-    print parcial
+    # print parcial
     costs = concatenate((-C,zeros((m+1))))
-    print costs
+    # print costs
 
-    tabular = concatenate((parcial,costs), 0)
+    tabular = vstack((parcial,costs))
     print tabular
     # tabular = array([array([A,eye(m),b.T]),array([-C,zeros((1,m+1))])])
     # print "TABULAR : " , tabular
