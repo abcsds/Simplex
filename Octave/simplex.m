@@ -16,17 +16,17 @@ function [x, z] = simplex(C, A, b, verbose=false)
     % [x,z] = simplex(C,A,b,verbose=false)
     % 
     % where:
-    %     C is a costs vector (m x 1)
-    %     A is the restrictions matrix (m x n)
-    %     b is the right hand vector (n x 1)
+    %     C is the objective function vector (m x 1)
+    %     A is the constraints matrix (m x n)
+    %     b is the right-hand-side vector (n x 1)
     %
 
     [m,n] = size(A);
     if (length(b)~=m)
-        error('Size of C and M dont match');
+        error('Size of C and M dont match\n');
     endif
     if (length(C)~=n)
-        error('Size of b and N dont match');
+        error('Size of b and N dont match\n');
     endif
     rows = m+1;
     cols = n+m+1;
@@ -54,7 +54,7 @@ function [x, z] = simplex(C, A, b, verbose=false)
 
         out = factibilityCondition(tabular(1:m,cols)./tabular(1:m,c_pivot));
         if out == -1
-            error('No solution found.');
+            error('No solution found.\n');
         end
         r_pivot = out;
         den = tabular(r_pivot, c_pivot);
@@ -75,7 +75,7 @@ function [x, z] = simplex(C, A, b, verbose=false)
         bs(bv) = tabular(1:m,cols);
         bs(nbv) = 0;
 
-        % For Every iteration print the table result
+        % For Every iteration print the result table 
         if verbose
             format short;
             fprintf('\n');
