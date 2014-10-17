@@ -1,13 +1,32 @@
-%% simplex: function description
-function [x, z] = simplex(C, A, b)
-    [m,n] = size(A)
-    lenC = length(C)
-    lenb = length(b)
+% simplex: Linear program solving method
+% Usage
+% 
+% [x,z] = simplex(C,A,b,verbose=false)
+% 
+% where:
+%     C is a costs vector (m x 1)
+%     A is the restrictions matrix (m x n)
+%     b is the right hand vector (n x 1)
+% 
+
+function [x, z] = simplex(C, A, b, verbose=false)
+    % simplex: Linear program solving method
+    % Usage
+    % 
+    % [x,z] = simplex(C,A,b,verbose=false)
+    % 
+    % where:
+    %     C is the objective function vector (m x 1)
+    %     A is the constraints matrix (m x n)
+    %     b is the right-hand-side vector (n x 1)
+    %
+
+    [m,n] = size(A);
     if (length(b)~=m)
-        error('Size of C and M dont match');
+        error('Size of C and M dont match\n');
     endif
     if (length(C)~=n)
-        error('Size of b and N dont match');
+        error('Size of b and N dont match\n');
     endif
     rows = m+1;
     cols = n+m+1;
@@ -35,7 +54,7 @@ function [x, z] = simplex(C, A, b)
 
         out = factibilityCondition(tabular(1:m,cols)./tabular(1:m,c_pivot));
         if out == -1
-            error('No solution');
+            error('No solution found.\n');
         end
         r_pivot = out;
         den = tabular(r_pivot, c_pivot);
@@ -56,9 +75,59 @@ function [x, z] = simplex(C, A, b)
         bs(bv) = tabular(1:m,cols);
         bs(nbv) = 0;
 
-    end
+        % For Every iteration print the result table 
+        if verbose
+            format short;
+            fprintf('\n');
+            for i=1:m+n
+                fprintf('         x%d',i);
+            end
+            fprintf('         b\n');
+            for i=1:m
+                fprintf('R%d',i);
+                disp(tabular(i,:));
+            end
+            fprintf('\n');
 
-    x= bs;
+            fprintf('R%d',m+1);
+            disp(tabular(m+1,:));
+            fprintf('\n');
+            input('Press a key for next iteration...');
+        end
+
+    end
+    % Print last iteration
+    if verbose
+            format short;
+            fprintf('\n');
+            fprintf('Simplex method finished.\n');
+            for i=1:m+n
+                fprintf('         x%d',i);
+            end
+            fprintf('         b\n');
+            for i=1:m
+                fprintf('R%d',i);
+                disp(tabular(i,:));
+            end
+            fprintf('\n');
+
+            fprintf('R%d',m+1);
+            disp(tabular(m+1,:));
+            fprintf('\n');
+            fprintf('Result:\n')
+            % input('Press a key to end function...');
+            for i=1:m+n
+                fprintf('x%d = %d\n',i,bs(:,i));
+            end
+            fprintf('\n');
+            fprintf('Z = %d\n\n', tabular(rows,cols));
+
+
+
+        end
+    % TODO: add help display
+
+    x = bs;
     z = tabular(rows,cols);
 
 
