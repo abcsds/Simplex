@@ -1,2 +1,5 @@
 octave-workspace
 DS_Store
+.RData
+.Rhistory
+*.pyc
